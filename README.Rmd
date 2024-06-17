@@ -1,0 +1,35 @@
+---
+output: github_document
+always_allow_html: true
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# wrqur
+Water Rights Quantification/Uses for R provides methods to retrieval water data and compare to allocation use.
+
+## Installation
+
+You can install the development version of wrqur from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("soilwaterfish/wrqur")
+```
+
+## Example
+
+```{r}
+library(targets)
+tar_visnetwork()
+```
+
