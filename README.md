@@ -19,11 +19,84 @@ devtools::install_github("soilwaterfish/wrqur")
 ## Example
 
 ``` r
+# Load packages required to define the pipeline:
 library(targets)
-tar_visnetwork()
-#> Google Chrome was not found. Try setting the `CHROMOTE_CHROME` environment variable to the executable of a Chromium-based browser, such as Google Chrome, Chromium or Brave.
-#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-```
+library(future)
+library(future.callr)
+plan(callr)
 
-<div class="visNetwork html-widget html-fill-item" id="htmlwidget-46d47c5e9137d0f3e1c4" style="width:100%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-46d47c5e9137d0f3e1c4">{"x":{"nodes":{"name":["adding_intersecting_flows","admin_int","basin","basin_entry","basins","flowmet_grt_strahler_1_order","flowmet_intersect","flowmet_join_nhdplus","nhdplus","pod","pou","pou_pod_together","pou_pod_together_fs_intersection","pou_pod_together_sf","pou_pod_together_sf_final_joined"],"type":["stem","stem","stem","stem","stem","stem","stem","stem","stem","stem","stem","stem","stem","stem","stem"],"description":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"status":["uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate","uptodate"],"seconds":[9.140000000000001,10.89,0.03,1.41,8.5,0.02,48.08,0.03,3.46,6.91,19.86,0.01,0.03,0.24,0.03],"bytes":[106603,41770,6827,7340,99677,240469,245341,529609,1121784,28722,127801,33802,33410,33255,109175],"branches":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"label":["adding_intersecting_flows","admin_int","basin","basin_entry","basins","flowmet_grt_strahler_1_order","flowmet_intersect","flowmet_join_nhdplus","nhdplus","pod","pou","pou_pod_together","pou_pod_together_fs_intersection","pou_pod_together_sf","pou_pod_together_sf_final_joined"],"color":["#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823","#354823"],"id":["adding_intersecting_flows","admin_int","basin","basin_entry","basins","flowmet_grt_strahler_1_order","flowmet_intersect","flowmet_join_nhdplus","nhdplus","pod","pou","pou_pod_together","pou_pod_together_fs_intersection","pou_pod_together_sf","pou_pod_together_sf_final_joined"],"level":[8,3,2,1,7,6,3,5,4,4,3,5,7,6,9],"shape":["dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot"]},"edges":{"from":["admin_int","pou_pod_together_sf","flowmet_join_nhdplus","adding_intersecting_flows","flowmet_grt_strahler_1_order","basin","basin","pou","basins","pou_pod_together_fs_intersection","basin","flowmet_grt_strahler_1_order","pou_pod_together_sf","pod","pou","flowmet_intersect","basin_entry","pou_pod_together","flowmet_intersect","nhdplus","basin"],"to":["pou_pod_together_fs_intersection","pou_pod_together_fs_intersection","flowmet_grt_strahler_1_order","pou_pod_together_sf_final_joined","pou_pod_together_sf_final_joined","admin_int","pod","pod","adding_intersecting_flows","adding_intersecting_flows","flowmet_intersect","basins","basins","pou_pod_together","pou_pod_together","nhdplus","basin","pou_pod_together_sf","flowmet_join_nhdplus","flowmet_join_nhdplus","pou"],"arrows":["to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":{"type":"cubicBezier","forceDirection":"horizontal"}},"physics":{"stabilization":false},"interaction":{"zoomSpeed":1},"layout":{"hierarchical":{"enabled":true,"direction":"LR"}}},"groups":null,"width":null,"height":null,"idselection":{"enabled":false,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":{"text":"","style":"font-family:Georgia, Times New Roman, Times, serif;font-weight:bold;font-size:20px;text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":false,"degree":{"from":1,"to":1},"algorithm":"hierarchical","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":true,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"legend":{"width":0.2,"useGroups":false,"position":"right","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":{"label":["Up to date","Stem"],"color":["#354823","#899DA4"],"shape":["dot","dot"]},"nodesToDataframe":true},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);"},"evals":[],"jsHooks":[]}</script>
+# Set target options:
+tar_option_set(
+  tidy_eval = TRUE, packages = c("sf", "tidyverse", "wrqur", "nhdplusTools", "furrr")
+)
+
+list(
+tar_target(basin_entry, "data/basin.shp", format = 'file'),
+
+tar_target(basin, read_sf(basin_entry)),
+
+tar_target(admin_int, suppressMessages(get_adminboundaries(filter_geom = sf::st_bbox(basin),
+                                                           where = "OWNERCLASSIFICATION='USDA FOREST SERVICE' OR OWNERCLASSIFICATION='UNPARTITIONED RIPARIAN INTEREST'")%>%
+                                         sf::st_transform(sf::st_crs(basin)) %>%
+                                         sf::st_make_valid() %>%
+                                         sf::st_intersection(basin) %>%
+                                         sf::st_union() %>%
+                                         sf::st_as_sf())),
+
+tar_target(flowmet_intersect, suppressMessages(get_flowmet(filter_geom = sf::st_bbox(basin),
+                                                fields = c("MAUG_HIST", "COMID")) %>%
+                                      sf::st_transform(sf::st_crs(basin)) %>%
+                                      sf::st_intersection(basin))),
+
+tar_target(nhdplus, nhdplusTools::get_nhdplus(sf::st_as_sfc(sf::st_bbox(flowmet_intersect)))),
+
+tar_target(flowmet_join_nhdplus, flowmet_intersect %>% dplyr::select(MAUG_HIST, COMID) %>%
+    dplyr::left_join(nhdplus %>%
+                       sf::st_drop_geometry() %>%
+                       dplyr::mutate(comid = as.character(comid)), by = c('COMID' = 'comid')) %>%
+      dplyr::filter(ftype %in% c('StreamRiver'))
+),
+
+tar_target(pou, get_mtwr(basin, layer = 'WR1POU', local_path =  r'{Z:\Downloads\MTWaterRights.gdb\MTWaterRights.gdb}') %>%
+             sf::read_sf() %>%
+             dplyr::group_by(WRKEY) %>%
+             dplyr::slice(1) %>%
+             dplyr::ungroup()),
+
+tar_target(pod, get_mtwr(basin, layer = 'WR1DIV', local_path =  r'{Z:\Downloads\MTWaterRights.gdb\MTWaterRights.gdb}') %>%
+             sf::read_sf() %>%
+             dplyr::group_by(WRKEY) %>%
+             dplyr::slice(1) %>%
+             dplyr::ungroup() %>%
+             dplyr::filter(WRKEY %in% pou$WRKEY)),
+
+tar_target(pou_pod_together, suppressMessages(pod %>%
+                                                  dplyr::left_join(pou %>%
+                                                                     sf::st_drop_geometry() %>%
+                                                                     dplyr::select(c("WRKEY", "PURPOSE", "IRRTYPE", "MAXACRES", "FLWRTGPM", "FLWRTCFS", "VOL", "ACREAGE"))))
+),
+
+tar_target(pou_pod_together_sf, date_cleaning(pou_pod_together)),
+
+tar_target(flowmet_grt_strahler_1_order, flowmet_join_nhdplus %>% filter(streamorde > 1)),
+
+tar_target(basins, get_pod_basins(flowmet_grt_strahler_1_order, sf::st_crs(pou_pod_together_sf))),
+
+tar_target(pou_pod_together_fs_intersection, fs_logic(pou_pod_together_sf, admin_int)),
+
+tar_target(adding_intersecting_flows, basins %>% split(.$COMID) %>%
+             furrr::future_map(
+               ~capture_sites_within(.x, pou_pod_together_fs_intersection)) %>%
+             dplyr::bind_rows() %>%
+             sf::st_as_sf()),
+tar_target(pou_pod_together_sf_final_joined, adding_intersecting_flows %>%
+             st_drop_geometry() %>%
+             left_join(flowmet_grt_strahler_1_order %>% select(COMID,MAUG_HIST, gnis_name, qe_08)) %>%
+             st_as_sf() %>%
+             mutate(
+               intersecting_flow_all_together_percent = (intersecting_flow_all_together/MAUG_HIST)*100,
+               intersecting_flow_fs_percent = (intersecting_flow_fs/MAUG_HIST)*100,
+               intersecting_flow_private_percent = (intersecting_flow_private/MAUG_HIST)*100
+             ))
+)
+```
