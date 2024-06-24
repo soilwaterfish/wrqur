@@ -3,8 +3,18 @@
 
 # wrqur
 
-Water Rights Quantification/Uses for R provides methods to retrieval
-water data and compare to allocation use.
+Water Rights Quantification/Uses for R provides methods for retrieving
+water allocation and flow data. It uses functions that call API’s or use
+local data to compare [Points of Diversion
+(POD)](https://ftpgeoinfo.msl.mt.gov/Data/Spatial/NonMSDI/DNRC_WR/MTWaterRights.gdb.zip)
+in Montana with
+[FlowMet](https://www.fs.usda.gov/rm/boise/AWAE/projects/modeled_stream_flow_metrics.shtml)
+flow outputs for the month of August. This work was developed by Brianna
+Niehoff for her master’s thesis at the University of Montana.
+
+In addition, the package uses a
+[{targets}](https://books.ropensci.org/targets/) pipeline to help with
+updating POD or FlowMet derivatives.
 
 ## Installation
 
@@ -16,7 +26,53 @@ You can install the development version of wrqur from
 devtools::install_github("soilwaterfish/wrqur")
 ```
 
+## Methods
+
+The model takes in any basin configuration and then calls local files or
+APIs with FlowMet `get_flowmet()`, Forest Service Administration
+Boundaries `get_adminboundaries()`, and PODs `get_mtwr()`. From there,
+utility functions help generate the intersecting FlowMet, Administration
+Boundaries, and POD values via common identifiers (COMID) and basins
+(see GIF below). This then relates all flow allocation metrics to \> 1st
+order (Strahler) streamlines via COMID and provides the following
+attributes:
+`intersecting_sites, intersecting_flow_all_together, intersecting_flow_fs, intersecting_flow_private, MAUG_HIST, gnis_name, intersecting_flow_all_together_percent, intersecting_flow_fs_percent, intersecting_flow_private_percent`.
+
+<div style="display: flex;">
+
+<div class="{"50%"}">
+
+**Forest Service Only** <img src="inst/www/animated_wf.gif">
+
+</div>
+
+<div class="{'50%'}">
+
+**Mix of Private and Forest Service**
+<img src="inst/www/animated_wf2.gif">
+
+</div>
+
+</div>
+
 ## Example
+
+The example below shows how the to call the `targets` package.
+
+``` r
+library(targets)
+
+#This will run the targets workflow
+
+tar_make() 
+
+# or for parallel processing
+
+tar_make_future(workers = 10)
+```
+
+If needed, you can change the `_targets.R` file to adjust for local/API
+calls or starting basins.
 
 ``` r
 
