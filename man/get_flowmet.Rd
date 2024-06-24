@@ -4,10 +4,12 @@
 \alias{get_flowmet}
 \title{Get FlowMet Data}
 \usage{
-get_flowmet(filter_geom, ...)
+get_flowmet(filter_geom, local_path = NULL, ...)
 }
 \arguments{
 \item{filter_geom}{an object of class bbox, sfc or sfg used to filter query results based on a predicate function.}
+
+\item{local_path}{A file path character string to the MT gdb for water rights POU and POD layers. 'Z:/some_path/wr_rights.gdb'}
 
 \item{...}{Arguments to pass to \link\link{arcgislayers} package \code{arc_select} function.}
 }

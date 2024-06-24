@@ -101,6 +101,8 @@ capture_sites_within <- function(x, tog) {
 #'
 date_cleaning <- function(data) {
 
+  data <- data %>% dplyr::filter(!is.na(PER_DIV))
+
   char <- data[nchar(data$PER_DIV) == max(nchar(data$PER_DIV), na.rm = T),][1,]$PER_DIV
 
   char_split <- strsplit(char, ';')[[1]]
@@ -154,23 +156,25 @@ get_pod_basins <- function(data, crs) {
 
 
   basins <- data %>%
-            split(.$COMID) %>%
-            furrr::future_map(purrr::safely(~nhdplusTools::get_nldi_basin(list(featureSource = 'comid', featureID = .$COMID))))
+    split(.$COMID) %>%
+    furrr::future_map(purrr::safely(~nhdplusTools::get_nldi_basin(list(featureSource = 'comid', featureID = .$COMID))))
 
   names_b <- names(basins)
 
   basins_final <- basins  %>%
-                  purrr::keep(~length(.) != 0) %>%
-                  purrr::map(~.x[['result']]) %>%
-                  purrr::map2(., names_b, ~.x %>% dplyr::mutate(COMID = .y)) %>%
-                  plyr::rbind.fill()%>%
-                  sf::st_as_sf()
+    purrr::keep(~length(.) != 0) %>%
+    purrr::map(~.x[['result']]) %>%
+    purrr::map2(., names_b, purrr::safely(~.x %>% dplyr::mutate(COMID = .y))) %>%
+    purrr::keep(~length(.) != 0) %>%
+    purrr::map(~.x[['result']]) %>%
+    plyr::rbind.fill()%>%
+    sf::st_as_sf()
 
 
   basins_final <- basins_final[!sf::st_is_empty(sf::st_zm(basins_final)),,drop=FALSE]
 
   basins_final <- basins_final %>%
-                  sf::st_transform(crs = crs)
+    sf::st_transform(crs = crs)
 
 
 }
