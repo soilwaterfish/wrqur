@@ -10,7 +10,8 @@ local data to compare [Points of Diversion
 in Montana with
 [FlowMet](https://www.fs.usda.gov/rm/boise/AWAE/projects/modeled_stream_flow_metrics.shtml)
 flow outputs for the month of August. This work was developed by Brianna
-Niehoff for her master’s thesis at the University of Montana.
+Niehoff for her master’s thesis (Oestreich, 2023) at the Montana State
+University.
 
 In addition, the package uses a
 [{targets}](https://books.ropensci.org/targets/) pipeline to help with
@@ -169,3 +170,9 @@ tar_target(pou_pod_together_sf_final_joined, adding_intersecting_flows %>%
 
 list(targets)
 ```
+
+## References
+
+Oestreich, B.L. (2023). QUANTIFYING WATER SUPPLY AND DEMAND ACROSS
+NATIONAL FOREST SYSTEM LANDS WITHIN THE CLARK FORK RIVER WATERSHED,
+MONTANA. Montana State University.

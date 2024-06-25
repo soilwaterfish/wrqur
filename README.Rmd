@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 # wrqur
-Water Rights Quantification/Uses for R provides methods for retrieving water allocation and flow data. It uses functions that call API's or use local data to compare [Points of Diversion (POD)](https://ftpgeoinfo.msl.mt.gov/Data/Spatial/NonMSDI/DNRC_WR/MTWaterRights.gdb.zip) in Montana with [FlowMet](https://www.fs.usda.gov/rm/boise/AWAE/projects/modeled_stream_flow_metrics.shtml) flow outputs for the month of August. This work was developed by Brianna Niehoff for her master's thesis at the University of Montana.  
+Water Rights Quantification/Uses for R provides methods for retrieving water allocation and flow data. It uses functions that call API's or use local data to compare [Points of Diversion (POD)](https://ftpgeoinfo.msl.mt.gov/Data/Spatial/NonMSDI/DNRC_WR/MTWaterRights.gdb.zip) in Montana with [FlowMet](https://www.fs.usda.gov/rm/boise/AWAE/projects/modeled_stream_flow_metrics.shtml) flow outputs for the month of August. This work was developed by Brianna Niehoff for her master's thesis (Oestreich, 2023) at the Montana State University.  
 
 In addition, the package uses a [{targets}](https://books.ropensci.org/targets/) pipeline to help with updating POD or FlowMet derivatives.
 
@@ -166,3 +166,7 @@ list(targets)
 ```
 
 
+## References  
+
+Oestreich, B.L. (2023). QUANTIFYING WATER SUPPLY AND DEMAND ACROSS NATIONAL FOREST SYSTEM
+LANDS WITHIN THE CLARK FORK RIVER WATERSHED, MONTANA. Montana State University.
