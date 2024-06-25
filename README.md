@@ -40,22 +40,16 @@ attributes:
 
 <img src="inst/www/flow_chart.png" width="200%" />
 
-<div style="display: flex;">
-
-<div class="{"50%"}">
-
-**Forest Service Only** <img src="inst/www/animated_wf.gif">
-
-</div>
-
-<div class="{'50%'}">
-
-**Mix of Private and Forest Service**
-<img src="inst/www/animated_wf2.gif">
-
-</div>
-
-</div>
+<table>
+<tr>
+<td valign="top">
+<img src="inst/www/animated_wf.gif"/>
+</td>
+<td valign="top">
+<img src="inst/www/animated_wf2.gif"/>
+</td>
+</tr>
+</table>
 
 ## Example
 

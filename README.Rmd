@@ -36,18 +36,13 @@ The model takes in any basin configuration and then calls local files or APIs wi
 knitr::include_graphics("inst/www/flow_chart.png")
 ```
 
-:::: {style="display: flex;"}
 
-::: {"50%"}
-**Forest Service Only**
-<img src="inst/www/animated_wf.gif">
-:::
-
-:::{'50%'}
-**Mix of Private and Forest Service**
-<img src="inst/www/animated_wf2.gif">
-:::
-::::
+<table>
+  <tr>
+    <td valign="top"><img src="inst/www/animated_wf.gif"/></td>
+    <td valign="top"><img src="inst/www/animated_wf2.gif"/></td>
+  </tr>
+</table>
 
 ## Example  
 
