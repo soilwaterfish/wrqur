@@ -38,6 +38,8 @@ order (Strahler) streamlines via COMID and provides the following
 attributes:
 `intersecting_sites, intersecting_flow_all_together, intersecting_flow_fs, intersecting_flow_private, MAUG_HIST, gnis_name, intersecting_flow_all_together_percent, intersecting_flow_fs_percent, intersecting_flow_private_percent`.
 
+<img src="inst/www/flow_chart.png" width="200%" />
+
 <div style="display: flex;">
 
 <div class="{"50%"}">

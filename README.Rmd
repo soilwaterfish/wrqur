@@ -1,5 +1,6 @@
 ---
 output: github_document
+always_allow_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -31,6 +32,9 @@ devtools::install_github("soilwaterfish/wrqur")
 
 The model takes in any basin configuration and then calls local files or APIs with FlowMet `get_flowmet()`, Forest Service Administration Boundaries `get_adminboundaries()`, and PODs `get_mtwr()`. From there, utility functions help generate the intersecting FlowMet, Administration Boundaries, and POD values via common identifiers (COMID) and basins (see GIF below). This then relates all flow allocation metrics to > 1st order (Strahler) streamlines via COMID and provides the following attributes: `intersecting_sites, intersecting_flow_all_together, intersecting_flow_fs, intersecting_flow_private, MAUG_HIST, gnis_name, intersecting_flow_all_together_percent, intersecting_flow_fs_percent, intersecting_flow_private_percent`.  
 
+```{r,echo=F, out.width="200%"}
+knitr::include_graphics("inst/www/flow_chart.png")
+```
 
 :::: {style="display: flex;"}
 
